@@ -15,6 +15,8 @@ merge_process_opts <- function(opts = list()) {
   default_opts$sanitize_colnames <- TRUE
   default_opts$sort_rows <- TRUE
   default_opts$convert_class <- TRUE
+  default_opts$classes_df <- data.frame(name = colnames(X),
+                                        class = rep("character", ncol(X)))
   default_opts$blanks_to_nas <- TRUE
   default_opts$remove_constant_cols <- TRUE
   default_opts$levels_to_int <- TRUE
@@ -37,9 +39,7 @@ preprocess_data <- function(X, opts = list()) {
 
   # convert columns to hand-labeled classes
   if(opts$convert_class) {
-    classes_df <- data.frame(name = colnames(X),
-                             class = rep("character", ncol(X)))
-    X <- convert_classes(X, classes_df)
+    X <- convert_classes(X, opts$classes_df)
   }
 
   # sort rows by the first column
